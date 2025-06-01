@@ -14,6 +14,8 @@ A Next.js application for managing and tracking household chores among roommates
 - TypeScript
 - Tailwind CSS
 
+_Deployment triggered for Vercel environment variable update._
+
 ## Getting Started
 
 First, run the development server:
