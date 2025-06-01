@@ -152,49 +152,6 @@ export default function SettingsPage() {
 
   return (
     <div className="max-w-2xl mx-auto p-4">
-      <div className="flex justify-between items-center mb-4">
-        <button
-          onClick={() => setShowAddChore(!showAddChore)}
-          className="px-3 py-1.5 bg-[#2563eb] text-white rounded hover:bg-blue-500 text-xs font-medium transition"
-        >
-          {showAddChore ? 'Cancel' : 'Add Chore'}
-        </button>
-      </div>
-
-      {showAddChore && (
-        <form onSubmit={addChore} className="flex items-center gap-2 mb-8 bg-[#18181b] p-4 rounded-lg border border-[#232323] shadow">
-          <input
-            className="px-2 py-1 rounded bg-[#232323] border-none text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-700 placeholder-gray-500 flex-1"
-            placeholder="Chore name"
-            value={newChore.name}
-            onChange={e => setNewChore({ ...newChore, name: e.target.value })}
-          />
-          <div className="flex gap-2">
-            <label className="text-gray-400 text-xs">Assign to
-              <select
-                className="ml-1 px-2 py-1 rounded bg-[#232323] border-none text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-700"
-                value={newChore.assignedTo}
-                onChange={e => setNewChore({ ...newChore, assignedTo: e.target.value })}
-              >
-                {roommates.map(rm => (
-                  <option key={rm.id} value={rm.id}>{rm.name}</option>
-                ))}
-              </select>
-            </label>
-            <label className="text-gray-400 text-xs">Frequency (days)
-              <input
-                type="number"
-                min={1}
-                className="ml-1 w-16 px-2 py-1 rounded bg-[#232323] border-none text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-700"
-                value={newChore.frequency}
-                onChange={e => setNewChore({ ...newChore, frequency: Number(e.target.value) })}
-              />
-            </label>
-          </div>
-          <button type="submit" className="px-3 py-1.5 bg-[#2563eb] text-white rounded hover:bg-blue-500 text-xs font-medium transition">Add</button>
-        </form>
-      )}
-
       <ul className="divide-y divide-[#232323] bg-[#18181b] rounded-lg border border-[#232323] shadow">
         {chores.map(chore => (
           <li key={chore.id} className="flex items-center gap-2 px-4 py-3">
@@ -235,6 +192,78 @@ export default function SettingsPage() {
           </li>
         ))}
       </ul>
+
+      {/* Add Chore Form */}
+      {showAddChore && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+          <div className="bg-[#18181b] rounded-lg p-6 w-full max-w-md">
+            <h2 className="text-xl font-semibold text-white mb-4">Add New Chore</h2>
+            <form onSubmit={addChore} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Chore Name</label>
+                <input
+                  type="text"
+                  value={newChore.name}
+                  onChange={e => setNewChore({ ...newChore, name: e.target.value })}
+                  className="w-full px-3 py-2 bg-[#232323] border border-gray-600 rounded text-white"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Frequency (days)</label>
+                <input
+                  type="number"
+                  value={newChore.frequency}
+                  onChange={e => setNewChore({ ...newChore, frequency: Number(e.target.value) })}
+                  className="w-full px-3 py-2 bg-[#232323] border border-gray-600 rounded text-white"
+                  min="1"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Assigned To</label>
+                <select
+                  value={newChore.assignedTo}
+                  onChange={e => setNewChore({ ...newChore, assignedTo: e.target.value })}
+                  className="w-full px-3 py-2 bg-[#232323] border border-gray-600 rounded text-white"
+                  required
+                >
+                  {roommates.map(rm => (
+                    <option key={rm.id} value={rm.id}>{rm.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAddChore(false)}
+                  className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-[#2563eb] text-white rounded hover:bg-blue-500 transition-colors"
+                >
+                  Add Chore
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add Chore Button */}
+      <div className="fixed bottom-6 right-6">
+        <button
+          onClick={() => setShowAddChore(!showAddChore)}
+          className="bg-[#2563eb] text-white p-3 rounded-full shadow-lg hover:bg-blue-500 transition-colors"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 } 
