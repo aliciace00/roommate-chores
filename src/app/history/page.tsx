@@ -19,26 +19,6 @@ interface ChoreHistory {
   completed_at: string;
 }
 
-interface ChoreHistoryWithRelations {
-  id: string;
-  chore_id: string;
-  completed_by: string;
-  completed_at: string;
-  chores: {
-    name: string;
-  };
-  roommates: {
-    name: string;
-  };
-}
-
-interface SummaryStats {
-  totalCompletions: number;
-  completionsByRoommate: Record<string, number>;
-  completionsByChore: Record<string, number>;
-  currentStreak: Record<string, number>;
-}
-
 function getFilteredHistory(
   history: ChoreHistory[], 
   start: string, 
@@ -61,56 +41,6 @@ function getCounts(filteredHistory: ChoreHistory[], roommates: Roommate[]) {
     counts[item.completed_by_name] = (counts[item.completed_by_name] || 0) + 1;
   });
   return Object.entries(counts).map(([name, count]) => ({ name, count }));
-}
-
-function calculateSummaryStats(history: ChoreHistory[]): SummaryStats {
-  const stats: SummaryStats = {
-    totalCompletions: history.length,
-    completionsByRoommate: {},
-    completionsByChore: {},
-    currentStreak: {}
-  };
-
-  // Calculate completions by roommate and chore
-  history.forEach(item => {
-    stats.completionsByRoommate[item.completed_by_name] = (stats.completionsByRoommate[item.completed_by_name] || 0) + 1;
-    stats.completionsByChore[item.chore_name] = (stats.completionsByChore[item.chore_name] || 0) + 1;
-  });
-
-  // Calculate current streaks
-  const today = new Date();
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
-
-  // Group completions by roommate and sort by date
-  const completionsByRoommate = history.reduce((acc, item) => {
-    if (!acc[item.completed_by_name]) {
-      acc[item.completed_by_name] = [];
-    }
-    acc[item.completed_by_name].push(new Date(item.completed_at));
-    return acc;
-  }, {} as Record<string, Date[]>);
-
-  // Calculate streaks
-  Object.entries(completionsByRoommate).forEach(([roommate, dates]) => {
-    dates.sort((a, b) => b.getTime() - a.getTime()); // Sort descending
-    let streak = 0;
-    let currentDate = today;
-
-    for (const date of dates) {
-      const diffDays = Math.floor((currentDate.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-      if (diffDays <= 1) {
-        streak++;
-        currentDate = date;
-      } else {
-        break;
-      }
-    }
-
-    stats.currentStreak[roommate] = streak;
-  });
-
-  return stats;
 }
 
 export default function HistoryPage() {
@@ -221,7 +151,6 @@ export default function HistoryPage() {
 
   const filteredHistory = getFilteredHistory(history, start, end, selectedRoommate, selectedChore);
   const chartData = getCounts(filteredHistory, roommates);
-  const summaryStats = calculateSummaryStats(filteredHistory);
 
   // Get unique chore names for the filter
   const uniqueChores = Array.from(new Set(history.map(item => item.chore_name)));
