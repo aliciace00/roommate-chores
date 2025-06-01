@@ -13,7 +13,6 @@ export default function SettingsPage() {
   const [chores, setChores] = useState<Chore[]>([]);
   const [roommates, setRoommates] = useState<Roommate[]>([]);
   const [newChore, setNewChore] = useState({ name: '', assignedTo: '', frequency: 7 });
-  const [showAddChore, setShowAddChore] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedRoommate, setSelectedRoommate] = useState<Roommate | null>(null);
@@ -57,65 +56,6 @@ export default function SettingsPage() {
 
     fetchData();
   }, []);
-
-  // Add a new chore
-  const addChore = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newChore.name.trim()) return;
-
-    try {
-      console.log('Adding chore:', {
-        name: newChore.name,
-        assigned_to: newChore.assignedTo,
-        frequency: newChore.frequency,
-        household_id: TEST_HOUSEHOLD_ID
-      });
-
-      const { data, error } = await supabase
-        .from('chores')
-        .insert([
-          {
-            name: newChore.name,
-            assigned_to: newChore.assignedTo,
-            frequency: newChore.frequency,
-            household_id: TEST_HOUSEHOLD_ID
-          }
-        ])
-        .select()
-        .single();
-
-      if (error) {
-        console.error('Supabase error:', error);
-        throw error;
-      }
-
-      setChores([...chores, data]);
-      setNewChore({ name: '', assignedTo: roommates[0]?.id || '', frequency: 7 });
-      setShowAddChore(false);
-    } catch (err) {
-      console.error('Add chore error:', err);
-      setError(err instanceof Error ? err.message : 'Failed to add chore');
-    }
-  };
-
-  // Edit a chore
-  const editChore = async (id: number, field: string, value: string | number) => {
-    try {
-      const { error } = await supabase
-        .from('chores')
-        .update({ [field]: value })
-        .eq('id', id);
-
-      if (error) throw error;
-
-      setChores(chores.map(chore =>
-        chore.id === id ? { ...chore, [field]: value } : chore
-      ));
-    } catch (err) {
-      console.error('Edit error:', err);
-      setError(err instanceof Error ? err.message : 'Failed to update chore');
-    }
-  };
 
   // Remove a chore
   const removeChore = async (id: number) => {
