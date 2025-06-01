@@ -135,9 +135,9 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center min-h-screen p-4 gap-4">
-      <div className="flex gap-4 w-full justify-center px-8 md:px-24 lg:px-48">
+      <div className="flex flex-col sm:flex-row gap-4 w-full justify-center px-4 sm:px-8 md:px-24 lg:px-48">
         {choresByRoommate.map(col => (
-          <div key={col.id} className="flex-1 min-w-[180px] bg-[#18181b] rounded-lg shadow p-3 border border-[#232323]">
+          <div key={col.id} className="flex-1 min-w-[280px] sm:min-w-[180px] bg-[#18181b] rounded-lg shadow p-3 border border-[#232323]">
             <h3 className="text-base font-semibold text-white mb-2 text-left">{col.name}</h3>
             {col.chores.length === 0 ? (
               <div className="text-gray-500 text-center py-4 text-sm">No chores</div>
