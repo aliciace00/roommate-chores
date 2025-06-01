@@ -154,49 +154,55 @@ export default function SettingsPage() {
     <div className="max-w-2xl mx-auto p-4">
       <ul className="divide-y divide-[#232323] bg-[#18181b] rounded-lg border border-[#232323] shadow">
         {chores.map(chore => (
-          <li key={chore.id} className="flex items-center gap-2 px-4 py-3">
-            <input
-              className="px-2 py-1 rounded bg-[#232323] border-none text-white flex-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-700 placeholder-gray-500"
-              value={chore.name}
-              onChange={e => editChore(chore.id, 'name', e.target.value)}
-              placeholder="Chore name"
-            />
-            <select
-              className="px-2 py-1 rounded bg-[#232323] border-none text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-700"
-              value={chore.assigned_to}
-              onChange={e => editChore(chore.id, 'assigned_to', e.target.value)}
-            >
-              {roommates.map(rm => (
-                <option key={rm.id} value={rm.id}>{rm.name}</option>
-              ))}
-            </select>
-            <input
-              type="number"
-              min={1}
-              className="w-16 px-2 py-1 rounded bg-[#232323] border-none text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-700"
-              value={chore.frequency}
-              onChange={e => editChore(chore.id, 'frequency', Number(e.target.value))}
-              placeholder="Days"
-            />
-            <button
-              className="ml-2 text-gray-500 hover:text-red-500 p-1 rounded transition"
-              onClick={() => removeChore(chore.id)}
-              title="Remove"
-              aria-label="Remove"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm2.47-10.53a.75.75 0 00-1.06 0L10 8.94 8.59 7.47a.75.75 0 10-1.06 1.06L8.94 10l-1.41 1.47a.75.75 0 101.06 1.06L10 11.06l1.41 1.47a.75.75 0 101.06-1.06L11.06 10l1.41-1.47a.75.75 0 000-1.06z" clipRule="evenodd" />
-              </svg>
-            </button>
-            <span className="text-xs text-gray-500 ml-2">every {chore.frequency} days</span>
+          <li key={chore.id} className="flex flex-col sm:flex-row items-start sm:items-center gap-2 px-4 py-3">
+            <div className="flex-1 w-full sm:w-auto">
+              <input
+                className="w-full px-2 py-1 rounded bg-[#232323] border-none text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-700 placeholder-gray-500"
+                value={chore.name}
+                onChange={e => editChore(chore.id, 'name', e.target.value)}
+                placeholder="Chore name"
+              />
+            </div>
+            <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+              <select
+                className="px-2 py-1 rounded bg-[#232323] border-none text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-700 flex-1 sm:flex-none min-w-[120px]"
+                value={chore.assigned_to}
+                onChange={e => editChore(chore.id, 'assigned_to', e.target.value)}
+              >
+                {roommates.map(rm => (
+                  <option key={rm.id} value={rm.id}>{rm.name}</option>
+                ))}
+              </select>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  min={1}
+                  className="w-16 px-2 py-1 rounded bg-[#232323] border-none text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-700"
+                  value={chore.frequency}
+                  onChange={e => editChore(chore.id, 'frequency', Number(e.target.value))}
+                  placeholder="Days"
+                />
+                <span className="text-xs text-gray-500 whitespace-nowrap">days</span>
+              </div>
+              <button
+                className="text-gray-500 hover:text-red-500 p-1 rounded transition"
+                onClick={() => removeChore(chore.id)}
+                title="Remove"
+                aria-label="Remove"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm2.47-10.53a.75.75 0 00-1.06 0L10 8.94 8.59 7.47a.75.75 0 10-1.06 1.06L8.94 10l-1.41 1.47a.75.75 0 101.06 1.06L10 11.06l1.41 1.47a.75.75 0 101.06-1.06L11.06 10l1.41-1.47a.75.75 0 000-1.06z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </div>
           </li>
         ))}
       </ul>
 
       {/* Add Chore Form */}
       {showAddChore && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-[#18181b] rounded-lg p-6 w-full max-w-md">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-[#18181b] rounded-lg p-4 sm:p-6 w-full max-w-md">
             <h2 className="text-xl font-semibold text-white mb-4">Add New Chore</h2>
             <form onSubmit={addChore} className="space-y-4">
               <div>
@@ -254,7 +260,7 @@ export default function SettingsPage() {
       )}
 
       {/* Add Chore Button */}
-      <div className="fixed bottom-6 right-6">
+      <div className="fixed bottom-6 right-6 z-40">
         <button
           onClick={() => setShowAddChore(!showAddChore)}
           className="bg-[#2563eb] text-white p-3 rounded-full shadow-lg hover:bg-blue-500 transition-colors"
