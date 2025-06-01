@@ -1,4 +1,18 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Roommate Chores
+
+A Next.js application for managing and tracking household chores among roommates.
+
+## Features
+- Track and assign chores
+- View chore history
+- Manage roommates
+- Visualize completion statistics
+
+## Tech Stack
+- Next.js
+- Supabase
+- TypeScript
+- Tailwind CSS
 
 ## Getting Started
 
