@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, LabelList } from 'recharts';
 import { supabase } from '@/lib/supabase';
-import type { Chore, Roommate } from '@/lib/supabase';
+import type { Roommate } from '@/lib/supabase';
 
 // Temporary household ID for testing - we'll replace this with real auth later
 const TEST_HOUSEHOLD_ID = '00000000-0000-0000-0000-000000000000';

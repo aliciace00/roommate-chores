@@ -97,12 +97,7 @@ export default function Home() {
           : c
       ));
     } catch (err) {
-      console.error('Mark done error:', {
-        error: err,
-        message: err instanceof Error ? err.message : 'Unknown error',
-        details: err instanceof Error ? (err as any).details : undefined,
-        hint: err instanceof Error ? (err as any).hint : undefined
-      });
+      console.error('Error marking chore as done:', err);
       setError(err instanceof Error ? err.message : 'Failed to mark chore as done');
     }
   };

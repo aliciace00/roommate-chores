@@ -10,14 +10,17 @@ export default function TestConnection() {
   useEffect(() => {
     async function testConnection() {
       try {
-        const { data, error } = await supabase.from('households').select('count').limit(1);
-        
+        const { error } = await supabase
+          .from('roommates')
+          .select('*')
+          .limit(1);
+
         if (error) throw error;
-        
         setStatus('success');
       } catch (err) {
+        console.error('Connection test error:', err);
         setStatus('error');
-        setError(err instanceof Error ? err.message : 'Unknown error occurred');
+        setError(err instanceof Error ? err.message : 'Failed to connect to Supabase');
       }
     }
 
@@ -25,19 +28,19 @@ export default function TestConnection() {
   }, []);
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Supabase Connection Test</h1>
-      <div className="p-4 rounded-lg bg-[#18181b] border border-[#232323]">
+    <div className="min-h-screen flex items-center justify-center bg-[#18181b] text-white">
+      <div className="p-8 rounded-lg bg-[#232323] shadow-lg">
+        <h1 className="text-2xl font-bold mb-4">Supabase Connection Test</h1>
         {status === 'loading' && (
-          <p className="text-gray-400">Testing connection...</p>
+          <p className="text-blue-400">Testing connection...</p>
         )}
         {status === 'success' && (
-          <p className="text-green-500">✅ Successfully connected to Supabase!</p>
+          <p className="text-green-400">Successfully connected to Supabase!</p>
         )}
         {status === 'error' && (
           <div>
-            <p className="text-red-500">❌ Failed to connect to Supabase</p>
-            {error && <p className="text-red-400 mt-2 text-sm">{error}</p>}
+            <p className="text-red-400">Failed to connect to Supabase</p>
+            {error && <p className="text-red-300 mt-2">{error}</p>}
           </div>
         )}
       </div>
